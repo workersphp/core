@@ -1,7 +1,8 @@
 // The framework-agnostic Workers PHP runtime: a resident PHP-in-wasm
 // interpreter per isolate, app delivered as a secret-free zip via Static
 // Assets, with queue/cron entry points and Cloudflare-primitive plumbing
-// (outboxes, cfbindings, Durable Object hubs).
+// (outboxes, cfbindings, Durable Object hubs). Request flow architecture
+// after togishima/laravel-edge (MIT).
 //
 // Everything framework-shaped arrives through an ADAPTER — a plain object
 // that renders the PHP scripts the runtime executes and describes the app's

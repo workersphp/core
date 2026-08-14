@@ -1,7 +1,8 @@
 // The Laravel dispatch scripts: PHP sources the runtime executes for HTTP
-// requests, queue payloads, scheduled work and boot warmup. Moved verbatim
-// from the original LaravelWorkerd runtime; behavior is contract-frozen by
-// the beta probes.
+// requests, queue payloads, scheduled work and boot warmup. The resident
+// interpreter dispatch pattern follows togishima/laravel-edge (MIT). Moved
+// verbatim from the original LaravelWorkerd runtime; behavior is
+// contract-frozen by the beta probes.
 import { metaToPhp } from '../../runtime/src/contracts.mjs';
 
 export const DEFAULT_ENV = {
