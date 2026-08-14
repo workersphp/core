@@ -1,0 +1,31 @@
+diff --git a/Makefile b/Makefile
+index 12855e1c..d3620df6 100755
+--- a/Makefile
++++ b/Makefile
+@@ -392,6 +392,7 @@ PHP_CLI_OBJS=sapi/embed/php_embed.lo
+ MAIN_MODULE?=1
+ ASYNCIFY?=1
+ ASYNCIFY_EXPORTS_FLAG?=
++WASM_EH_FLAGS?=
+ 
+ BUILD_FLAGS+=-f ../../php.mk \
+ 	-j${CPU_COUNT} -l${MAX_LOAD} \
+@@ -402,8 +403,8 @@ BUILD_FLAGS+=-f ../../php.mk \
+ 	BUILD_BINARY='${SAPI_PHPDBG_PATH}'\
+ 	SAPI_PHPDBG_PATH='${SAPI_PHPDBG_PATH}'\
+ 	PHP_CLI_OBJS='${PHP_CLI_OBJS}' \
+-	EXTRA_CFLAGS=' -Wno-int-conversion -Wimplicit-function-declaration ${LTO_FLAG} -fPIC ${EXTRA_CFLAGS} ${SYMBOL_FLAGS} -D HAVE_REALLOCARRAY=1 '\
+-	EXTRA_CXXFLAGS=' -Wno-int-conversion -Wimplicit-function-declaration ${LTO_FLAG} -fPIC  ${EXTRA_CFLAGS} ${SYMBOL_FLAGS} '\
++	EXTRA_CFLAGS=' -Wno-int-conversion -Wimplicit-function-declaration ${LTO_FLAG} -fPIC ${EXTRA_CFLAGS} ${SYMBOL_FLAGS} ${WASM_EH_FLAGS} -D HAVE_REALLOCARRAY=1 '\
++	EXTRA_CXXFLAGS=' -Wno-int-conversion -Wimplicit-function-declaration ${LTO_FLAG} -fPIC  ${EXTRA_CFLAGS} ${SYMBOL_FLAGS} ${WASM_EH_FLAGS} '\
+ 	EXTRA_LDFLAGS_PROGRAM='-O${OPTIMIZE} -static \
+ 		-Wl,-zcommon-page-size=2097152 -Wl,-zmax-page-size=2097152 -L/src/lib/lib \
+ 		${SYMBOL_FLAGS} ${LTO_FLAG} -fPIC \
+@@ -426,6 +427,7 @@ BUILD_FLAGS+=-f ../../php.mk \
+ 		-s AUTO_JS_LIBRARIES=0              \
+ 		-s ASYNCIFY=${ASYNCIFY}             \
+ 		${ASYNCIFY_EXPORTS_FLAG}            \
++		${WASM_EH_FLAGS}                    \
+ 		-I /src/third_party/php${PHP_VERSION}-src/ \
+ 		-I /src/third_party/php${PHP_VERSION}-src/Zend \
+ 		-I /src/third_party/php${PHP_VERSION}-src/main \

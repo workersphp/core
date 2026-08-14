@@ -1,0 +1,69 @@
+diff --git a/package.json b/package.json
+index b6b77fb4..d32eadf3 100644
+--- a/package.json
++++ b/package.json
+@@ -77,7 +77,8 @@
+     "packages/xmlreader",
+     "packages/xmlwriter",
+     "packages/zlib",
+-    "packages/sdl"
++    "packages/sdl",
++    "packages/cfbindings"
+   ],
+   "contributors": [
+     {
+@@ -106,4 +107,4 @@
+     "sm-no-saccade-style": "^0.1.1",
+     "typescript": "^6.0.3"
+   }
+-}
++}
+\ No newline at end of file
+diff --git a/packages/cfbindings/package.json b/packages/cfbindings/package.json
+new file mode 100644
+index 00000000..73bf3f6c
+--- /dev/null
++++ b/packages/cfbindings/package.json
+@@ -0,0 +1,6 @@
++{
++	"name": "cfbindings",
++	"version": "0.1.0",
++	"description": "Cloudflare bindings bridge extension for php-wasm builds",
++	"private": true
++}
+diff --git a/packages/cfbindings/pre.mak b/packages/cfbindings/pre.mak
+new file mode 100644
+index 00000000..0467df4e
+--- /dev/null
++++ b/packages/cfbindings/pre.mak
+@@ -0,0 +1,11 @@
++#!/usr/bin/env make
++WITH_CFBINDINGS?=0
++
++ifeq (${WITH_CFBINDINGS},1)
++EXTRA_FLAGS+= -D WITH_CFBINDINGS=1
++PHP_CONFIGURE_DEPS+= third_party/cfbindings/config.m4
++CONFIGURE_FLAGS+= --enable-cfbindings
++DEPENDENCIES+= third_party/php${PHP_VERSION}-src/ext/cfbindings/cfbindings.c
++CGI_DEPENDENCIES+= third_party/php${PHP_VERSION}-src/ext/cfbindings/cfbindings.c
++DBG_DEPENDENCIES+= third_party/php${PHP_VERSION}-src/ext/cfbindings/cfbindings.c
++endif
+diff --git a/packages/cfbindings/static.mak b/packages/cfbindings/static.mak
+new file mode 100644
+index 00000000..16924124
+--- /dev/null
++++ b/packages/cfbindings/static.mak
+@@ -0,0 +1,13 @@
++#!/usr/bin/env make
++
++third_party/cfbindings/cfbindings.c: $(wildcard ${CFBINDINGS_DEV_PATH}/*)
++	@ echo -e "\e[33;4mImporting cfbindings\e[0m"
++	mkdir -p third_party/cfbindings
++	cp -Lprfv ${CFBINDINGS_DEV_PATH}/. third_party/cfbindings/
++	touch third_party/cfbindings/cfbindings.c
++
++third_party/cfbindings/config.m4: third_party/cfbindings/cfbindings.c
++
++third_party/php${PHP_VERSION}-src/ext/cfbindings/%: third_party/cfbindings/% third_party/php${PHP_VERSION}-src/patched
++	@ echo -e "\e[33;4mimporting cfbindings\e[0m"
++	${DOCKER_RUN} cp -TLprfv third_party/cfbindings/ third_party/php${PHP_VERSION}-src/ext/cfbindings/

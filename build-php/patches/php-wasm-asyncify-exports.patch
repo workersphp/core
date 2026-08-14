@@ -1,0 +1,20 @@
+diff --git a/Makefile b/Makefile
+index a0f28124..12855e1c 100755
+--- a/Makefile
++++ b/Makefile
+@@ -391,6 +391,7 @@ PHP_CLI_OBJS=sapi/embed/php_embed.lo
+ 
+ MAIN_MODULE?=1
+ ASYNCIFY?=1
++ASYNCIFY_EXPORTS_FLAG?=
+ 
+ BUILD_FLAGS+=-f ../../php.mk \
+ 	-j${CPU_COUNT} -l${MAX_LOAD} \
+@@ -424,6 +425,7 @@ BUILD_FLAGS+=-f ../../php.mk \
+ 		-s AUTO_NATIVE_LIBRARIES=0          \
+ 		-s AUTO_JS_LIBRARIES=0              \
+ 		-s ASYNCIFY=${ASYNCIFY}             \
++		${ASYNCIFY_EXPORTS_FLAG}            \
+ 		-I /src/third_party/php${PHP_VERSION}-src/ \
+ 		-I /src/third_party/php${PHP_VERSION}-src/Zend \
+ 		-I /src/third_party/php${PHP_VERSION}-src/main \

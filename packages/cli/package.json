@@ -1,0 +1,34 @@
+{
+  "name": "@workersphp/cli",
+  "version": "0.1.0",
+  "description": "One-command deploy of PHP apps to Cloudflare Workers.",
+  "type": "module",
+  "bin": {
+    "workersphp": "bin/workersphp.mjs",
+    "php-edge": "bin/workersphp.mjs"
+  },
+  "dependencies": {
+    "@workersphp/laravel": "0.1.0",
+    "@workersphp/runtime": "0.1.0",
+    "@workersphp/php-wasm-jspi": "0.1.0"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/workersphp/core.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://workersphp.dev",
+  "files": [
+    "bin",
+    "src",
+    "README.md"
+  ],
+  "keywords": [
+    "laravel",
+    "php",
+    "cloudflare-workers",
+    "deploy",
+    "cli"
+  ]
+}

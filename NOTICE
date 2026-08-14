@@ -1,0 +1,35 @@
+Workers PHP
+Copyright (c) 2026 Workers PHP contributors
+
+The code in this repository is licensed under the MIT License (see LICENSE).
+
+The prebuilt PHP WebAssembly runtime (distributed via npm as
+@workersphp/php-wasm-jspi and mirrored on GitHub Releases) is a derived work
+of the following projects and is subject to their licenses (license texts are
+bundled inside the binary package's LICENSES/ directory):
+
+- PHP (https://www.php.net/) — The PHP License, version 3.01
+  This product includes PHP software, freely available from
+  <https://www.php.net/software/>.
+- php-wasm by Sean Morris (https://github.com/seanmorris/php-wasm) — Apache-2.0
+  Modifications: see build-php/patches/ in this repository (the statement of
+  changes required by the Apache License).
+- pdo-cfd1 (https://github.com/seanmorris/pdo-cfd1) — Apache-2.0
+  Modifications: build-php/patches/pdo-cfd1-last-insert-id.patch.
+- vrzno (https://github.com/seanmorris/vrzno) — Apache-2.0
+- Oniguruma (https://github.com/kkos/oniguruma) — BSD-2-Clause
+- libxml2 (https://gitlab.gnome.org/GNOME/libxml2) — MIT
+- libzip (https://libzip.org/) — BSD-3-Clause
+- zlib (https://zlib.net/) — zlib license
+- OpenSSL (https://www.openssl.org/) — Apache-2.0
+- SQLite (https://sqlite.org/) — Public Domain
+
+The cfbindings PHP extension (build-php/ext-cfbindings/) is original work in
+this repository, MIT licensed.
+
+Architecture prior art: the embed-SAPI resident-interpreter request flow
+follows togishima/laravel-edge (MIT), gratefully credited in the README.
+
+"Laravel" is a trademark of Taylor Otwell. "Cloudflare" and "Workers" are
+trademarks of Cloudflare, Inc. This is a community project, not affiliated
+with or endorsed by the Laravel project or Cloudflare, Inc.

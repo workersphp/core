@@ -1,0 +1,23 @@
+diff --git a/packages/mbstring/static.mak b/packages/mbstring/static.mak
+index 5d486652..f8e106f5 100644
+--- a/packages/mbstring/static.mak
++++ b/packages/mbstring/static.mak
+@@ -18,7 +18,8 @@ WITH_MBSTRING=dynamic
+ endif
+ 
+ ifeq (${WITH_MBSTRING},static)
+-CONFIGURE_FLAGS+= --with-mbstring
++# PHP >= 7.4 does not recognize --with-mbstring (the correct flag is --enable-mbstring)
++CONFIGURE_FLAGS+= --enable-mbstring
+ endif
+ 
+ ifeq (${WITH_MBSTRING},dynamic)
+@@ -41,7 +42,7 @@ endif
+ 
+ ifeq (${WITH_ONIGURUMA},static)
+ ARCHIVES+= lib/lib/libonig.a
+-CONFIGURE_FLAGS+= --with-onig
++# --with-onig was removed in PHP >= 7.4; oniguruma is auto-detected via pkg-config
+ SKIP_LIBS+= -lonig
+ EXTRA_MODULES+= packages/mbstring/libonig.so
+ endif

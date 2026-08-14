@@ -1,0 +1,28 @@
+{
+  "name": "@workersphp/laravel",
+  "version": "0.1.0",
+  "description": "Laravel adapter for the Workers PHP runtime: dispatch scripts, warmup, asset conventions and build tooling.",
+  "type": "module",
+  "dependencies": {
+    "@workersphp/runtime": "0.1.0"
+  },
+  "main": "src/index.mjs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/workersphp/core.git",
+    "directory": "packages/laravel"
+  },
+  "homepage": "https://workersphp.dev",
+  "files": [
+    "src",
+    "build",
+    "README.md"
+  ],
+  "keywords": [
+    "laravel",
+    "php",
+    "cloudflare-workers",
+    "wasm"
+  ]
+}

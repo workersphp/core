@@ -1,0 +1,21 @@
+diff --git a/source/pib/pib.c b/source/pib/pib.c
+index ecb82257..8b34ed31 100644
+--- a/source/pib/pib.c
++++ b/source/pib/pib.c
+@@ -322,3 +322,16 @@ ZEND_TSRMLS_CACHE_DEFINE()
+ # endif
+ ZEND_GET_MODULE(pib)
+ #endif
++
++/* workerd has no process spawning; give OPcache's file_cache probe a clean
++ * ENOSYS instead of an aborting Emscripten stub (an aborted module is dead
++ * for the life of the isolate). */
++#include <errno.h>
++int posix_spawnp(void *pid, const char *file, const void *file_actions,
++	const void *attrp, char *const argv[], char *const envp[])
++{
++	(void) pid; (void) file; (void) file_actions;
++	(void) attrp; (void) argv; (void) envp;
++	errno = ENOSYS;
++	return ENOSYS;
++}

@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  runtime-tests:
+    name: Runtime (Node 24, JSPI)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: node tools/ensure-binaries.mjs
+      - name: JSPI smoke, frozen clock, bindings, outbox, contracts, CLI goldens
+        run: node --experimental-wasm-jspi --test packages/runtime/test/*.test.mjs packages/cli/test/*.test.mjs
+
+  php-package:
+    name: laravel-bridge (Testbench)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, dom, gd
+          coverage: none
+      - uses: actions/cache@v4
+        with:
+          path: packages/laravel-bridge/vendor
+          key: composer-${{ runner.os }}-${{ hashFiles('packages/laravel-bridge/composer.json') }}
+      - run: composer install --no-interaction --no-progress
+        working-directory: packages/laravel-bridge
+      - run: vendor/bin/phpunit
+        working-directory: packages/laravel-bridge
+
+  workerd-smoke:
+    name: wrangler dev serves the hello example
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: node tools/ensure-binaries.mjs
+      - name: Boot and probe
+        run: |
+          npx wrangler dev -c examples/hello/wrangler.jsonc --port 8799 &
+          for i in $(seq 1 60); do
+            if curl -sf -o /tmp/hello.html http://127.0.0.1:8799/; then break; fi
+            sleep 2
+          done
+          grep -q "Zend Engine" /tmp/hello.html

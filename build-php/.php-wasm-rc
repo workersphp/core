@@ -1,0 +1,56 @@
+# Static PHP build for Cloudflare workerd — embed SAPI (web-mjs target).
+# Based on togishima/laravel-edge's proven config (patches/php-wasm-build.env),
+# with the libxml/dom/xml family added back statically (our delta — full Laravel
+# extension coverage). Requires the mbstring static-build patch applied to the
+# php-wasm checkout, or configure silently drops mbstring.
+#
+# Post-build steps (laravel-edge war stories #7/#8):
+# 1. tools/wasm_mem.py <wasm> 768   — lower INITIAL_MEMORY 128MB -> 48MB
+# 2. patch glue: _posix_spawnp abort -> return 52 (ENOSYS)
+PHP_VERSION=8.5
+MAIN_MODULE=0
+OPTIMIZE=z
+
+GZIP=1
+BROTLI=1
+
+WITH_BCMATH=1
+WITH_CALENDAR=0
+WITH_CTYPE=1
+WITH_EXIF=0
+WITH_FILTER=1
+WITH_SESSION=1
+WITH_TOKENIZER=1
+
+WITH_MBSTRING=static
+WITH_ONIGURUMA=static
+WITH_OPENSSL=static
+
+WITH_ZLIB=static
+WITH_LIBZIP=static
+
+WITH_SQLITE=static
+WITH_PDO_CFD1=1
+WITH_PDO_PGLITE=0
+
+# Our delta vs laravel-edge: Laravel's published requirements include DOM/XML.
+WITH_LIBXML=static
+WITH_DOM=static
+WITH_XML=static
+WITH_SIMPLEXML=static
+WITH_XMLREADER=static
+WITH_XMLWRITER=static
+
+WITH_ICONV=0
+WITH_GD=0
+WITH_INTL=0
+WITH_TIDY=0
+WITH_YAML=0
+WITH_PHAR=0
+WITH_SDL=0
+WITH_WAITLINE=0
+
+WITH_VRZNO=1
+
+# Isolate memory: 128MB default would be born at the Workers ceiling.
+INITIAL_MEMORY=48MB

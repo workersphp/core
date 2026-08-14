@@ -1,0 +1,29 @@
+{
+  "name": "@workersphp/runtime",
+  "version": "0.1.0",
+  "description": "Framework-agnostic PHP-in-wasm runtime for Cloudflare Workers isolates.",
+  "type": "module",
+  "dependencies": {
+    "fflate": "^0.8.3"
+  },
+  "main": "src/index.mjs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/workersphp/core.git",
+    "directory": "packages/runtime"
+  },
+  "homepage": "https://workersphp.dev",
+  "files": [
+    "src",
+    "tools",
+    "README.md"
+  ],
+  "keywords": [
+    "php",
+    "cloudflare-workers",
+    "wasm",
+    "webassembly",
+    "edge"
+  ]
+}

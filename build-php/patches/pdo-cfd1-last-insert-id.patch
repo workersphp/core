@@ -1,0 +1,37 @@
+diff --git a/pdo_cfd1_db.c b/pdo_cfd1_db.c
+index 219e77d..0d7dd47 100644
+--- a/pdo_cfd1_db.c
++++ b/pdo_cfd1_db.c
+@@ -74,16 +74,14 @@ static bool pdo_cfd1_set_attr(pdo_dbh_t *dbh, zend_long attr, zval *val)
+ 
+ static zend_string *pdo_cfd1_last_insert_id(pdo_dbh_t *dbh, const zend_string *name)
+ {
+-	const char *nameStr = ZSTR_VAL(name);
+ #if PHP_MAJOR_VERSION >= 8 && PHP_MINOR_VERSION >= 1
+ 	return zend_ulong_to_str
+ #else
+ 	return zend_long_to_str
+ #endif
+-	(EM_ASM_INT({
+-		console.log('LAST INSERT ID', UTF8ToString($0));
+-		return 0;
+-	}, &nameStr));
++	((zend_ulong) EM_ASM_DOUBLE({
++		return Module.__cfd1LastRowId || 0;
++	}));
+ }
+ 
+ static void pdo_cfd1_fetch_error_func(pdo_dbh_t *dbh, pdo_stmt_t *stmt, zval *info)
+diff --git a/pdo_cfd1_db_statement.c b/pdo_cfd1_db_statement.c
+index becf094..11a146f 100644
+--- a/pdo_cfd1_db_statement.c
++++ b/pdo_cfd1_db_statement.c
+@@ -37,6 +37,8 @@ EM_ASYNC_JS(int, pdo_cfd1_real_stmt_execute, (zval *zv, zval *rv), {
+ 		return false;
+ 	}
+ 
++	Module.__cfd1LastRowId = (result.meta && result.meta.last_row_id) || Module.__cfd1LastRowId || 0;
++
+ 	Module.jsToZval(result.results, rv);
+ 
+ 	return true;

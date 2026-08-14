@@ -1,0 +1,10 @@
+{
+  "prod": {
+    "chirper": "https://your-chirper-app.example.workers.dev",
+    "starter": "https://your-starter-app.example.workers.dev"
+  },
+  "beta": {
+    "chirper": "https://your-chirper-beta.example.workers.dev",
+    "starter": "https://your-starter-beta.example.workers.dev"
+  }
+}

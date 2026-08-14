@@ -1,0 +1,27 @@
+node_modules/
+.wrangler/
+.dev.vars
+*.log
+.DS_Store
+*.cpuprofile
+
+# Regenerable build artifacts (rebuild via build-php*/.php-wasm-rc + REBUILD.md)
+build-php/*.mjs
+build-php/*.wasm
+build-php/*.gz
+build-php/*.br
+build-php-jspi/*.mjs
+build-php-jspi/*.wasm
+build-php-jspi/*.gz
+build-php-jspi/*.br
+examples/*/assets/*.zip
+.bake-asset-manifest.json
+
+# Private: real deployments and rescued app source trees
+deployments/
+
+# Private ops material and per-machine probe targets
+docs/private/
+tools/probe.targets.json
+# Rescued private app source trees are committed deliberately; their own
+# .gitignore files exclude vendor, node_modules and .env.

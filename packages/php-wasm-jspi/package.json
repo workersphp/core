@@ -1,0 +1,21 @@
+{
+  "name": "@workersphp/php-wasm-jspi",
+  "version": "0.1.0",
+  "description": "PHP 8.5 compiled to WebAssembly for Cloudflare Workers: JSPI, wasm exceptions, pdo_cfd1 and the cfbindings bridge extension.",
+  "type": "module",
+  "phpVersion": "8.5.2",
+  "files": [
+    "*.mjs",
+    "*.wasm",
+    "LICENSES/",
+    "NOTICE",
+    "README.md"
+  ],
+  "license": "SEE LICENSE IN NOTICE",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/workersphp/core.git",
+    "directory": "packages/php-wasm-jspi"
+  },
+  "homepage": "https://workersphp.dev"
+}

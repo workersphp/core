@@ -1,0 +1,19 @@
+{
+  "name": "php-v8",
+  "private": true,
+  "description": "PHP running inside Cloudflare Workers V8 isolates - Laravel is the prize.",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "node --experimental-wasm-jspi --test packages/runtime/test/*.test.mjs packages/cli/test/*.test.mjs",
+    "probe:prod": "node tools/probe.mjs --target prod",
+    "probe:beta": "node tools/probe.mjs --target beta --rw",
+    "hello:dev": "wrangler dev -c examples/hello/wrangler.jsonc",
+    "hello:deploy": "wrangler deploy -c examples/hello/wrangler.jsonc",
+    "hello:startup": "wrangler check startup -c examples/hello/wrangler.jsonc"
+  },
+  "devDependencies": {
+    "wrangler": "^4.123.0"
+  }
+}

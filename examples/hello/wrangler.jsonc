@@ -1,0 +1,10 @@
+{
+  // Account comes from `wrangler login` or the CLOUDFLARE_ACCOUNT_ID env var.
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "php-hello",
+  "main": "src/index.js",
+  "compatibility_date": "2026-08-01",
+  "observability": {
+    "enabled": true
+  }
+}

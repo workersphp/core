@@ -1,0 +1,36 @@
+{
+  "comment": "Cross-language contract fixtures for the cfbindings bridge. Consumed by BOTH the PHP package tests (FakeCloudflare/DoStore) and the JS runtime tests (bindings handler/CacheHub). Change here means change on both sides.",
+  "docacheTagging": [
+    { "php": 5, "tag": "n", "wire": { "n": 5 } },
+    { "php": -3, "tag": "n", "wire": { "n": -3 } },
+    { "php": 2.5, "tag": "n", "wire": { "n": 2.5 } },
+    { "php": 0, "tag": "n", "wire": { "n": 0 } },
+    { "php": "hello", "tag": "s" },
+    { "php": true, "tag": "s" },
+    { "php": null, "tag": "s" },
+    { "php": ["a", "b"], "tag": "s" },
+    { "php": "42", "tag": "s" }
+  ],
+  "kvTtlClamp": [
+    { "requested": 5, "stored": 60 },
+    { "requested": 59, "stored": 60 },
+    { "requested": 60, "stored": 60 },
+    { "requested": 3600, "stored": 3600 },
+    { "requested": 0, "stored": null }
+  ],
+  "djb2Shards": {
+    "comment": "djb2-xor hash mod 16, pinned so the JS shard function can never silently change (shard moves would strand live Durable Object state).",
+    "cases": [
+      { "key": "demo-clicks", "shard": 6 },
+      { "key": "laravel-cache-demo-kv-stamp", "shard": 13 },
+      { "key": "lock:mylock", "shard": 11 },
+      { "key": "user:1:profile", "shard": 14 },
+      { "key": "a", "shard": 4 }
+    ]
+  },
+  "outboxShapes": {
+    "queue": { "requiredKeys": ["queue", "payload", "delaySeconds"] },
+    "mail": { "requiredKeys": ["from", "to", "mime"] },
+    "broadcast": { "requiredKeys": ["channels", "event", "data", "socket"] }
+  }
+}

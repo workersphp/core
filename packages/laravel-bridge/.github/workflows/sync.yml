@@ -1,0 +1,50 @@
+# This mirror pulls itself from the monorepo. Everything it reads is public,
+# and the only write is to this repository - covered by the workflow's own
+# built-in token. No cross-repo credentials exist anywhere in this setup.
+#
+# This file lives in the monorepo at packages/laravel-bridge/.github/workflows/
+# and arrives here through the sync itself.
+name: Sync from monorepo
+
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pull package content and tags from workersphp/core
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git clone --quiet https://github.com/workersphp/core /tmp/core
+
+          sync_from() {
+            git -C /tmp/core checkout --quiet "$1"
+            rsync -a --delete --exclude '.git' /tmp/core/packages/laravel-bridge/ .
+            git add -A
+          }
+
+          # Propagate release tags that core has and this mirror lacks.
+          for tag in $(git -C /tmp/core tag -l 'v*'); do
+            if ! git rev-parse -q --verify "refs/tags/$tag" > /dev/null; then
+              sync_from "$tag"
+              git diff --cached --quiet || git commit -m "Sync from workersphp/core@$tag"
+              git tag "$tag"
+              git push origin "$tag"
+            fi
+          done
+
+          # Track main.
+          sync_from origin/main
+          if ! git diff --cached --quiet; then
+            git commit -m "Sync from workersphp/core@$(git -C /tmp/core rev-parse --short origin/main)"
+          fi
+          git push origin HEAD:main
