@@ -12,9 +12,16 @@ binary is rebuilt.
    `"private": true` guards (present until first publish to prevent
    accidents).
 3. `npm publish -w packages/runtime -w packages/laravel -w packages/cli --access public`
-4. `git tag v0.x.y && git push --tags` - the laravel-bridge mirror pulls the
-   tag on its next hourly sync (or trigger its "Sync from monorepo" workflow
-   manually for instant) and Packagist updates automatically.
+4. `git tag v0.x.y && git push --tags`, then update the mirror:
+
+   ```sh
+   git subtree split --prefix=packages/laravel-bridge -b lc-split
+   git push -f git@github.com:workersphp/laravel-bridge.git lc-split:main
+   git push git@github.com:workersphp/laravel-bridge.git v0.x.y
+   git branch -D lc-split
+   ```
+
+   Packagist picks the push up automatically via the GitHub webhook.
 5. `gh release create v0.x.y` with release notes.
 
 ## Binary release

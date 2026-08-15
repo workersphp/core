@@ -8,10 +8,9 @@ One monorepo. `packages/runtime` (framework-agnostic core), `packages/laravel`
 rc file, patches, the cfbindings C extension, REBUILD.md), `examples/`,
 `contracts/` (cross-language fixtures shared by the JS and PHP test suites).
 
-`workersphp/laravel-bridge` on Packagist is a read-only mirror that syncs
-itself hourly from this repository: its own workflow pulls the public
-package folder and pushes to itself, so no cross-repo credentials exist.
-Issues and pull requests belong here, not there.
+`workersphp/laravel-bridge` on Packagist is a read-only mirror, updated by
+the maintainer from this repository. Issues and pull requests belong here,
+not there.
 
 ## Running the tests
 
