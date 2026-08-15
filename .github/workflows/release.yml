@@ -15,7 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Create release
-        run: gh release create '${{ github.ref_name }}' --generate-notes
+      - name: Create release if it does not exist
+        run: |
+          gh release view '${{ github.ref_name }}' --repo '${{ github.repository }}' > /dev/null 2>&1 \
+            || gh release create '${{ github.ref_name }}' --generate-notes
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

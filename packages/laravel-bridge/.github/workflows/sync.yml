@@ -8,7 +8,7 @@ name: Sync from monorepo
 
 on:
   schedule:
-    - cron: '17 * * * *'
+    - cron: '17 3 * * *'
   workflow_dispatch:
 
 permissions:
@@ -32,19 +32,23 @@ jobs:
             git add -A
           }
 
-          # Propagate release tags that core has and this mirror lacks.
-          for tag in $(git -C /tmp/core tag -l 'v*'); do
-            if ! git rev-parse -q --verify "refs/tags/$tag" > /dev/null; then
-              sync_from "$tag"
-              git diff --cached --quiet || git commit -m "Sync from workersphp/core@$tag"
-              git tag "$tag"
-              git push origin "$tag"
-            fi
-          done
-
           # Track main.
           sync_from origin/main
           if ! git diff --cached --quiet; then
             git commit -m "Sync from workersphp/core@$(git -C /tmp/core rev-parse --short origin/main)"
           fi
           git push origin HEAD:main
+
+          # Propagate release tags this mirror lacks. Existence is checked
+          # against the REMOTE: the checkout does not fetch tags, and a tag
+          # that exists remotely must never be re-pushed (it would be
+          # rejected and fail the run).
+          for tag in $(git -C /tmp/core tag -l 'v*'); do
+            if ! git ls-remote --exit-code --tags origin "refs/tags/$tag" > /dev/null; then
+              sync_from "$tag"
+              git diff --cached --quiet || git commit -m "Sync from workersphp/core@$tag"
+              git tag "$tag"
+              git push origin "$tag"
+              git checkout --quiet main 2>/dev/null || true
+            fi
+          done
